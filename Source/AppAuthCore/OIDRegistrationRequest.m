@@ -20,6 +20,7 @@
 
 #import "OIDClientMetadataParameters.h"
 #import "OIDDefines.h"
+#import "OIDJsonUtilities.h"
 #import "OIDServiceConfiguration.h"
 
 /*! @brief The key for the @c configuration property for @c NSSecureCoding
@@ -167,6 +168,41 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_tokenEndpointAuthenticationMethod
                 forKey:OIDTokenEndpointAuthenticationMethodParam];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+}
+
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithJson:dict[kConfigurationKey]];
+  NSString *initialAccessToken = dict[kInitialAccessToken];
+  NSArray<NSURL *> *redirectURIs = [OIDJsonUtilities urlsFromJson:dict[kRedirectURIsKey]];
+  NSArray<NSString *> *responseTypes = dict[kResponseTypesKey];
+  NSArray<NSString *> *grantTypes = dict[kGrantTypesKey];
+  NSString *subjectType = dict[kSubjectTypeKey];
+  NSString *tokenEndpointAuthenticationMethod = dict[OIDTokenEndpointAuthenticationMethodParam];
+  NSDictionary *additionalParameters = dict[kAdditionalParametersKey];
+  self = [self initWithConfiguration:configuration
+                         redirectURIs:redirectURIs
+                        responseTypes:responseTypes
+                           grantTypes:grantTypes
+                          subjectType:subjectType
+              tokenEndpointAuthMethod:tokenEndpointAuthenticationMethod
+                   initialAccessToken:initialAccessToken
+                 additionalParameters:additionalParameters];
+   return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_configuration forKey:kConfigurationKey];
+  [json setJsonObject:_initialAccessToken forKey:kInitialAccessToken];
+  [json setJsonObject:_redirectURIs forKey:kRedirectURIsKey];
+  [json setJsonObject:_responseTypes forKey:kResponseTypesKey];
+  [json setJsonObject:_grantTypes forKey:kGrantTypesKey];
+  [json setJsonObject:_subjectType forKey:kSubjectTypeKey];
+  [json setJsonObject:_tokenEndpointAuthenticationMethod forKey:OIDTokenEndpointAuthenticationMethodParam];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
 }
 
 #pragma mark - NSObject overrides

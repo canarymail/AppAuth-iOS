@@ -204,6 +204,22 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   [_discoveryDictionary encodeWithCoder:aCoder];
 }
 
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  NSError *error;
+  self = [self initWithDictionary:dict error:&error];
+  if (error) {
+    return nil;
+  } else {
+    return self;
+  }
+}
+
+- (NSDictionary *)toJson {
+  return _discoveryDictionary.copy;
+}
+
 #pragma mark - Properties
 
 - (NSDictionary<NSString *, NSString *> *)discoveryDictionary {

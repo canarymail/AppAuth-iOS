@@ -19,13 +19,14 @@
 #import <Foundation/Foundation.h>
 
 #import "OIDExternalUserAgentRequest.h"
+#import "OIDJsonUtilities.h"
 
 @class OIDServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDEndSessionRequest : NSObject
-    <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest>
+    <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest, OIDJsonable>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

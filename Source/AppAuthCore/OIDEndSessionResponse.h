@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDEndSessionRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -26,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
  */
 
-@interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding>
+@interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The request which was serviced.
  */

@@ -22,6 +22,7 @@
 #import "OIDDefines.h"
 #import "OIDError.h"
 #import "OIDFieldMapping.h"
+#import "OIDJsonUtilities.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenUtilities.h"
 
@@ -159,6 +160,25 @@ static NSString *const kTokenExchangeRequestException =
   [aCoder encodeObject:_request forKey:kRequestKey];
   [OIDFieldMapping encodeWithCoder:aCoder map:[[self class] fieldMap] instance:self];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+}
+
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDAuthorizationRequest *request = [[OIDAuthorizationRequest alloc] initWithJson:dict[kRequestKey]];
+  if (self = [self initWithRequest:request parameters:@{ }]) {
+    [OIDFieldMapping decodeWithJson:dict map:[[self class] fieldMap] instance:self];
+    _additionalParameters = dict[kAdditionalParametersKey];
+  }
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_request forKey:kRequestKey];
+  [OIDFieldMapping encodeWithJson:json map:[[self class] fieldMap] instance:self];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
 }
 
 #pragma mark - NSObject overrides

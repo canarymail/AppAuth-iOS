@@ -37,6 +37,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentEnterpriseUserAg
 #import <AppAuthEnterpriseUserAgent/OIDExternalUserAgentSession.h>
 #import <AppAuthEnterpriseUserAgent/OIDGrantTypes.h>
 #import <AppAuthEnterpriseUserAgent/OIDIDToken.h>
+#import <AppAuthEnterpriseUserAgent/OIDJsonUtilities.h>
 #import <AppAuthEnterpriseUserAgent/OIDRegistrationRequest.h>
 #import <AppAuthEnterpriseUserAgent/OIDRegistrationResponse.h>
 #import <AppAuthEnterpriseUserAgent/OIDResponseTypes.h>

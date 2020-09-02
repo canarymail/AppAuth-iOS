@@ -19,6 +19,7 @@
 #import "OIDFieldMapping.h"
 
 #import "OIDDefines.h"
+#import "OIDJsonUtilities.h"
 
 @implementation OIDFieldMapping
 
@@ -87,6 +88,30 @@
   for (NSString *key in map) {
     OIDFieldMapping *mapping = map[key];
     id value = [aCoder decodeObjectOfClass:mapping.expectedType forKey:key];
+    [instance setValue:value forKey:mapping.name];
+  }
+}
+
++ (void)encodeWithJson:(NSMutableDictionary *)json
+                   map:(NSDictionary<NSString *, OIDFieldMapping *> *)map
+              instance:(id)instance {
+  for (NSString *key in map) {
+    id value = [instance valueForKey:map[key].name];
+    [json setJsonObject:value forKey:key];
+  }
+}
+
++ (void)decodeWithJson:(NSDictionary *)json
+                   map:(NSDictionary<NSString *,OIDFieldMapping *> *)map
+              instance:(id)instance {
+  for (NSString *key in map) {
+    OIDFieldMapping *mapping = map[key];
+    id value = [json objectForKey:key];
+    if ([mapping.expectedType conformsToProtocol:@protocol(OIDJsonable)]) {
+      value = [[mapping.expectedType alloc] initWithJson:value];
+    } else if (mapping.expectedType == [NSURL class]) {
+      value = kJsonUrl(value);
+    }
     [instance setValue:value forKey:mapping.name];
   }
 }

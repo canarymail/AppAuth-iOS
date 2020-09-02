@@ -205,6 +205,40 @@ NS_ASSUME_NONNULL_BEGIN
   [aCoder encodeObject:_endSessionEndpoint forKey:kEndSessionEndpointKey];
 }
 
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  NSURL *authorizationEndpoint = kJsonUrl(dict[kAuthorizationEndpointKey]);
+  NSURL *tokenEndpoint = kJsonUrl(dict[kTokenEndpointKey]);
+  NSURL *issuer = kJsonUrl(dict[kIssuerKey]);
+  NSURL *registrationEndpoint = kJsonUrl(dict[kRegistrationEndpointKey]);
+  NSURL *endSessionEndpoint = kJsonUrl(dict[kEndSessionEndpointKey]);
+  // We don't accept nil authorizationEndpoints or tokenEndpoints.
+  if (!authorizationEndpoint || !tokenEndpoint) {
+    return nil;
+  }
+
+  OIDServiceDiscovery *discoveryDocument = [[OIDServiceDiscovery alloc] initWithJson:dict[kDiscoveryDocumentKey]];
+
+  return [self initWithAuthorizationEndpoint:authorizationEndpoint
+                               tokenEndpoint:tokenEndpoint
+                                      issuer:issuer
+                        registrationEndpoint:registrationEndpoint
+                          endSessionEndpoint:endSessionEndpoint
+                           discoveryDocument:discoveryDocument];
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_authorizationEndpoint forKey:kAuthorizationEndpointKey];
+  [json setJsonObject:_tokenEndpoint forKey:kTokenEndpointKey];
+  [json setJsonObject:_issuer forKey:kIssuerKey];
+  [json setJsonObject:_registrationEndpoint forKey:kRegistrationEndpointKey];
+  [json setJsonObject:_discoveryDocument forKey:kDiscoveryDocumentKey];
+  [json setJsonObject:_endSessionEndpoint forKey:kEndSessionEndpointKey];
+  return json;
+}
+
 #pragma mark - description
 
 - (NSString *)description {

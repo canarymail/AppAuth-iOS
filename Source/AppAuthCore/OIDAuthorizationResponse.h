@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDAuthorizationRequest;
 @class OIDTokenRequest;
 
@@ -28,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-5.1
     @see http://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthResponse
  */
-@interface OIDAuthorizationResponse : NSObject <NSCopying, NSSecureCoding>
+@interface OIDAuthorizationResponse : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The request which was serviced.
  */

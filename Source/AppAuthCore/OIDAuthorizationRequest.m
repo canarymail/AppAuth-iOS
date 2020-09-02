@@ -272,6 +272,53 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
 }
 
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithJson:dict[kConfigurationKey]];
+  NSString *responseType = dict[kResponseTypeKey];
+  NSString *clientID = dict[kClientIDKey];
+  NSString *clientSecret = dict[kClientSecretKey];
+  NSString *scope = dict[kScopeKey];
+  NSURL *redirectURL = [OIDJsonUtilities urlFromJson:dict[kRedirectURLKey]];
+  NSString *state = dict[kStateKey];
+  NSString *nonce = dict[kNonceKey];
+  NSString *codeVerifier = dict[kCodeVerifierKey];
+  NSString *codeChallenge = dict[kCodeChallengeKey];
+  NSString *codeChallengeMethod = dict[kCodeChallengeMethodKey];
+  NSDictionary *additionalParameters = dict[kAdditionalParametersKey];
+  self = [self initWithConfiguration:configuration
+                            clientId:clientID
+                        clientSecret:clientSecret
+                               scope:scope
+                         redirectURL:redirectURL
+                        responseType:responseType
+                               state:state
+                               nonce:nonce
+                        codeVerifier:codeVerifier
+                       codeChallenge:codeChallenge
+                 codeChallengeMethod:codeChallengeMethod
+                additionalParameters:additionalParameters];
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_configuration forKey:kConfigurationKey];
+  [json setJsonObject:_responseType forKey:kResponseTypeKey];
+  [json setJsonObject:_clientID forKey:kClientIDKey];
+  [json setJsonObject:_clientSecret forKey:kClientSecretKey];
+  [json setJsonObject:_scope forKey:kScopeKey];
+  [json setJsonObject:_redirectURL forKey:kRedirectURLKey];
+  [json setJsonObject:_state forKey:kStateKey];
+  [json setJsonObject:_nonce forKey:kNonceKey];
+  [json setJsonObject:_codeVerifier forKey:kCodeVerifierKey];
+  [json setJsonObject:_codeChallenge forKey:kCodeChallengeKey];
+  [json setJsonObject:_codeChallengeMethod forKey:kCodeChallengeMethodKey];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
+}
+
 #pragma mark - NSObject overrides
 
 - (NSString *)description {

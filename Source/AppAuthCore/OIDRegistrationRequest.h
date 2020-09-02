@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDAuthorizationResponse;
 @class OIDServiceConfiguration;
 
@@ -26,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents a registration request.
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationRequest
  */
-@interface OIDRegistrationRequest : NSObject <NSCopying, NSSecureCoding>
+@interface OIDRegistrationRequest : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

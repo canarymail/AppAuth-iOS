@@ -292,6 +292,35 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   [aCoder encodeBool:_needsTokenRefresh forKey:kNeedsTokenRefreshKey];
 }
 
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  _lastAuthorizationResponse = [[OIDAuthorizationResponse alloc] initWithJson:dict[kLastAuthorizationResponseKey]];
+  _lastTokenResponse = [[OIDTokenResponse alloc] initWithJson:dict[kLastTokenResponseKey]];
+  self = [self initWithAuthorizationResponse:_lastAuthorizationResponse
+                               tokenResponse:_lastTokenResponse];
+  if (self) {
+    _authorizationError = dict[kAuthorizationErrorKey];
+    _scope = dict[kScopeKey];
+    _refreshToken = dict[kRefreshTokenKey];
+    _needsTokenRefresh = [dict[kNeedsTokenRefreshKey] boolValue];
+  }
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_lastAuthorizationResponse forKey:kLastAuthorizationResponseKey];
+  [json setJsonObject:_lastTokenResponse forKey:kLastTokenResponseKey];
+  if (_authorizationError) {
+    // ignore
+  }
+  [json setJsonObject:_scope forKey:kScopeKey];
+  [json setJsonObject:_refreshToken forKey:kRefreshTokenKey];
+  [json setJsonObject:@(_needsTokenRefresh) forKey:kNeedsTokenRefreshKey];
+  return json;
+}
+
 #pragma mark - Private convenience getters
 
 - (NSString *)accessToken {

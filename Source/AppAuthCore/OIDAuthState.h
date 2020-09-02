@@ -17,6 +17,8 @@
  */
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
 @class OIDAuthState;
@@ -51,7 +53,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
  */
-@interface OIDAuthState : NSObject <NSSecureCoding>
+@interface OIDAuthState : NSObject <NSSecureCoding, OIDJsonable>
 
 /*! @brief The most recent refresh token received from the server.
     @discussion Rather than using this property directly, you should call

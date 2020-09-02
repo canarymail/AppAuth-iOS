@@ -28,6 +28,7 @@
 #import "Source/AppAuthCore/OIDAuthState.h"
 #import "Source/AppAuthCore/OIDAuthorizationResponse.h"
 #import "Source/AppAuthCore/OIDErrorUtilities.h"
+#import "Source/AppAuthCore/OIDJsonUtilities.h"
 #import "Source/AppAuthCore/OIDRegistrationResponse.h"
 #import "Source/AppAuthCore/OIDTokenResponse.h"
 #endif
@@ -381,6 +382,35 @@
   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
                         authState.authorizationError.domain, @"");
   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");
+}
+
+- (void)testJsonCoding {
+  XCTAssertEqualObjects(@"1", [OIDJsonUtilities jsonSafeObject:@"1"], @"");
+  
+   OIDAuthState *authState = [[self class] testInstance];
+   NSDictionary *json = [authState toJson];
+   OIDAuthState *authStateCopy = [[OIDAuthState alloc] initWithJson:json];
+
+   XCTAssertEqualObjects(authStateCopy.refreshToken, authState.refreshToken, @"");
+   XCTAssertEqualObjects(authStateCopy.scope, authState.scope, @"");
+   XCTAssertEqualObjects(authStateCopy.lastAuthorizationResponse.authorizationCode,
+                         authState.lastAuthorizationResponse.authorizationCode, @"");
+   XCTAssertEqualObjects(authStateCopy.lastTokenResponse.refreshToken,
+                         authState.lastTokenResponse.refreshToken, @"");
+   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
+                         authState.authorizationError.domain, @"");
+   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");
+   XCTAssertEqual(authStateCopy.isAuthorized, authState.isAuthorized, @"");
+
+//   // Verify the error object is indeed restored.
+//   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
+//   [authState updateWithTokenResponse:nil error:oauthError];
+//   data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+//   XCTAssertNotNil(authState.authorizationError, @"");
+//   authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
+//                         authState.authorizationError.domain, @"");
+//   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");
 }
 
 - (void)testIsTokenFreshWithFreshToken {

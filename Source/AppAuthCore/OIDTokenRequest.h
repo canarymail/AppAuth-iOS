@@ -21,9 +21,11 @@
 // This file only declares string constants useful for constructing a @c OIDTokenRequest, so it is
 // imported here for convenience.
 #import "OIDGrantTypes.h"
+#import "OIDJsonUtilities.h"
 
 @class OIDAuthorizationResponse;
 @class OIDServiceConfiguration;
+@protocol OIDJsonable;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-@interface OIDTokenRequest : NSObject <NSCopying, NSSecureCoding>
+@interface OIDTokenRequest : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDTokenRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -26,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-@interface OIDTokenResponse : NSObject <NSCopying, NSSecureCoding>
+@interface OIDTokenResponse : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The request which was serviced.
  */

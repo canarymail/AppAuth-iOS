@@ -20,6 +20,7 @@
 
 #import "OIDDefines.h"
 #import "OIDError.h"
+#import "OIDJsonUtilities.h"
 #import "OIDScopeUtilities.h"
 #import "OIDServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
@@ -206,6 +207,40 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
   [aCoder encodeObject:_codeVerifier forKey:kCodeVerifierKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+}
+
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithJson:dict[kConfigurationKey]];
+  NSString *grantType = dict[kGrantTypeKey];
+  NSString *code = dict[kAuthorizationCodeKey];
+  NSString *clientID = dict[kClientIDKey];
+  NSString *clientSecret = dict[kClientSecretKey];
+  NSString *scope = dict[kScopeKey];
+  NSString *refreshToken = dict[kRefreshTokenKey];
+  NSString *codeVerifier = dict[kCodeVerifierKey];
+  NSURL *redirectURL = kJsonUrl(dict[kRedirectURLKey]);
+  NSDictionary *additionalParameters = dict[kAdditionalParametersKey];
+  
+  self = [self initWithConfiguration:configuration grantType:grantType authorizationCode:code redirectURL:redirectURL clientID:clientID clientSecret:clientSecret scope:scope refreshToken:refreshToken codeVerifier:codeVerifier additionalParameters:additionalParameters];
+
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_configuration forKey:kConfigurationKey];
+  [json setJsonObject:_grantType forKey:kGrantTypeKey];
+  [json setJsonObject:_authorizationCode forKey:kAuthorizationCodeKey];
+  [json setJsonObject:_clientID forKey:kClientIDKey];
+  [json setJsonObject:_clientSecret forKey:kClientSecretKey];
+  [json setJsonObject:_redirectURL forKey:kRedirectURLKey];
+  [json setJsonObject:_scope forKey:kScopeKey];
+  [json setJsonObject:_refreshToken forKey:kRefreshTokenKey];
+  [json setJsonObject:_codeVerifier forKey:kCodeVerifierKey];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
 }
 
 #pragma mark - NSObject overrides

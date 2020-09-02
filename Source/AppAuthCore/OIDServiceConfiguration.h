@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDServiceConfiguration;
 @class OIDServiceDiscovery;
 
@@ -32,7 +34,7 @@ typedef void (^OIDServiceConfigurationCreated)
 
 /*! @brief Represents the information needed to construct a @c OIDAuthorizationService.
  */
-@interface OIDServiceConfiguration : NSObject <NSCopying, NSSecureCoding>
+@interface OIDServiceConfiguration : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The authorization endpoint URI.
  */
