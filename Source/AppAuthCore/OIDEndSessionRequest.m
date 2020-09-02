@@ -137,6 +137,32 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
 }
 
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithJson:dict[kConfigurationKey]];
+  NSString *idTokenHint = dict[kIdTokenHintKey];
+  NSURL *postLogoutRedirectURL = [OIDJsonUtilities urlFromJson:dict[kPostLogoutRedirectURLKey]];
+  NSString *state = dict[kStateKey];
+  NSDictionary *additionalParameters = dict[kAdditionalParametersKey];
+  self = [self initWithConfiguration:configuration
+                         idTokenHint:idTokenHint
+               postLogoutRedirectURL:postLogoutRedirectURL
+                               state:state
+                additionalParameters:additionalParameters];
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [json setJsonObject:_configuration forKey:kConfigurationKey];
+  [json setJsonObject:_idTokenHint forKey:kIdTokenHintKey];
+  [json setJsonObject:_postLogoutRedirectURL forKey:kPostLogoutRedirectURLKey];
+  [json setJsonObject:_state forKey:kStateKey];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
+}
+
 #pragma mark - NSObject overrides
 
 - (NSString *)description {

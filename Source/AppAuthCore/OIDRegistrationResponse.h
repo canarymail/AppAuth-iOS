@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDJsonUtilities.h"
+
 @class OIDRegistrationRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -50,7 +52,7 @@ extern NSString *const OIDRegistrationClientURIParam;
 /*! @brief Represents a registration response.
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse
  */
-@interface OIDRegistrationResponse : NSObject <NSCopying, NSSecureCoding>
+@interface OIDRegistrationResponse : NSObject <NSCopying, NSSecureCoding, OIDJsonable>
 
 /*! @brief The request which was serviced.
  */

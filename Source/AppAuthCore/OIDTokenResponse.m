@@ -20,6 +20,7 @@
 
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
+#import "OIDJsonUtilities.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenUtilities.h"
 
@@ -138,6 +139,26 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [OIDFieldMapping encodeWithCoder:aCoder map:[[self class] fieldMap] instance:self];
   [aCoder encodeObject:_request forKey:kRequestKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+}
+
+#pragma mark - Jsonable
+
+- (instancetype)initWithJson:(NSDictionary *)dict {
+  OIDTokenRequest *request = [[OIDTokenRequest alloc] initWithJson:dict[kRequestKey]];
+  self = [self initWithRequest:request parameters:@{ }];
+  if (self) {
+    [OIDFieldMapping decodeWithJson:dict map:[[self class] fieldMap] instance:self];
+    _additionalParameters = dict[kAdditionalParametersKey];
+  }
+  return self;
+}
+
+- (NSDictionary *)toJson {
+  NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+  [OIDFieldMapping encodeWithJson:json map:[[self class] fieldMap] instance:self];
+  [json setJsonObject:_request forKey:kRequestKey];
+  [json setJsonObject:_additionalParameters forKey:kAdditionalParametersKey];
+  return json;
 }
 
 #pragma mark - NSObject overrides

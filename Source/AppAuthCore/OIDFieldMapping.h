@@ -92,6 +92,10 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
                     map:(NSDictionary<NSString *, OIDFieldMapping *> *)map
                instance:(id)instance;
 
++ (void)encodeWithJson:(NSMutableDictionary *)json
+                   map:(NSDictionary<NSString *, OIDFieldMapping *> *)map
+              instance:(id)instance;
+
 /*! @brief This helper method for @c NSCoding implementations performs a deserialization of
         fields defined in a field mapping.
     @param aCoder An @c NSCoder instance from which to deserialize instance variable values from.
@@ -101,6 +105,10 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 + (void)decodeWithCoder:(NSCoder *)aCoder
                     map:(NSDictionary<NSString *, OIDFieldMapping *> *)map
                instance:(id)instance;
+
++ (void)decodeWithJson:(NSDictionary *)json
+                   map:(NSDictionary<NSString *,OIDFieldMapping *> *)map
+              instance:(id)instance;
 
 /*! @brief Returns an @c NSSet of classes suitable for deserializing JSON content in an
         @c NSSecureCoding context.

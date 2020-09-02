@@ -21,10 +21,12 @@
 // These files only declare string constants useful for constructing a @c OIDAuthorizationRequest,
 // so they are imported here for convenience.
 #import "OIDExternalUserAgentRequest.h"
+#import "OIDJsonUtilities.h"
 #import "OIDResponseTypes.h"
 #import "OIDScopes.h"
 
 @class OIDServiceConfiguration;
+@protocol OIDJsonable;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +41,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @see https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
 @interface OIDAuthorizationRequest :
-    NSObject<NSCopying, NSSecureCoding, OIDExternalUserAgentRequest>
+    NSObject<NSCopying, NSSecureCoding, OIDExternalUserAgentRequest, OIDJsonable>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.
