@@ -246,7 +246,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
   NSURL *redirectURL = kJsonUrl(dict[kRedirectURLKey]);
   NSDictionary *additionalParameters = dict[kAdditionalParametersKey];
   
-  self = [self initWithConfiguration:configuration grantType:grantType authorizationCode:code redirectURL:redirectURL clientID:clientID clientSecret:clientSecret scope:scope refreshToken:refreshToken codeVerifier:codeVerifier additionalParameters:additionalParameters];
+  self = [self initWithConfiguration:configuration grantType:grantType authorizationCode:code redirectURL:redirectURL clientID:clientID clientSecret:clientSecret scope:scope refreshToken:refreshToken codeVerifier:codeVerifier additionalParameters:additionalParameters additionalHeaders:nil];
 
   return self;
 }
