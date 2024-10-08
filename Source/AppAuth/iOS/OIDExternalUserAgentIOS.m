@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *requestURL = [request externalUserAgentRequestURL];
   
   if ([requestURL.absoluteString hasPrefix:@"canary-auth"]) {
-    [[UIApplication sharedApplication] openURL:requestURL];
+    [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
     openedUserAgent = YES;
   }
 
@@ -182,7 +182,8 @@ NS_ASSUME_NONNULL_BEGIN
   }
   // iOS 8 and earlier, use mobile Safari
   if (!openedUserAgent){
-    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+    [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
+    openedUserAgent = YES;
   }
 
   if (!openedUserAgent) {
